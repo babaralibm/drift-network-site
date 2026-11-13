@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Medicare Plan Information Request | Drift Network</title>
+<meta name="description" content="Request information about Medicare Advantage, Medicare Supplement and Medicare Part D plans available in your area. Drift Network.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b2a5b'/%3E%3Ctext x='32' y='44' font-family='Arial, sans-serif' font-size='36' font-weight='bold' fill='%2300c2b2' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy:#0b2a5b; --navy2:#123a75; --teal:#00c2b2; --teal2:#00a99a;
+    --ink:#16233a; --muted:#5b6b84; --line:#dbe4f0; --bg:#f4f7fb; --card:#ffffff;
+    --gold:#f5c542; --green:#15803d; --greenbg:#eaf7ee; --red:#dc2626; --redbg:#fef2f2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto;padding:24px 16px 48px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 24px rgba(11,42,91,.08);overflow:hidden}
+  .brand{padding:20px 24px 8px;text-align:center}
+  .brand img{height:64px;width:auto;max-width:100%}
+  .brand .name{font-size:22px;font-weight:800;letter-spacing:.02em;color:var(--navy);margin-top:6px}
+  .brand .tag{font-size:13px;color:var(--muted)}
+  .hero{background:var(--navy);color:#fff;padding:22px 24px}
+  .hero h1{margin:0 0 6px;font-size:24px;line-height:1.25}
+  .hero p{margin:0;font-size:15px;color:#dbe7ff}
+  .hero .rule{width:56px;height:4px;background:var(--teal);border-radius:2px;margin-top:14px}
+  form{padding:24px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+  label .req{color:var(--red)}
+  input,select{width:100%;padding:11px 12px;font-size:15px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:none}
+  input:focus,select:focus{border-color:var(--teal2);box-shadow:0 0 0 3px rgba(0,194,178,.18)}
+  input.invalid,select.invalid{border-color:var(--red);background:var(--redbg)}
+  .hint{font-size:12px;color:var(--muted);margin-top:4px}
+  .err{font-size:12px;color:var(--red);margin-top:4px;display:none}
+  .consent{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:14px;margin:18px 0 8px}
+  .consent.invalid{border-color:var(--red);background:var(--redbg)}
+  .consent label{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:13px;line-height:1.55;cursor:pointer;margin:0}
+  .consent input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--navy)}
+  .cert-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:14px 0 4px}
+  .cert-status .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none}
+  .cert-status.ready{color:var(--green)}
+  .cert-status.ready .dot{background:var(--green)}
+  .cert-status.failed{color:var(--red)}
+  .cert-status.failed .dot{background:var(--red)}
+  .cert-status button{background:none;border:none;color:var(--navy2);font-size:13px;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+  button.submit{width:100%;padding:14px;font-size:16px;font-weight:700;color:#fff;background:var(--teal2);border:none;border-radius:12px;cursor:pointer;margin-top:12px}
+  button.submit:hover:not(:disabled){background:#008f82}
+  button.submit:disabled{background:#9fb3c8;cursor:not-allowed}
+  .secure{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+  .disclaimers{padding:0 24px 24px;font-size:12px;color:var(--muted);line-height:1.6}
+  .disclaimers p{margin:0 0 8px}
+  .foot{padding:16px 24px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+  .foot a{color:var(--navy2)}
+  /* Popup */
+  .overlay{position:fixed;inset:0;background:rgba(11,42,91,.62);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .overlay.open{display:flex}
+  .popup{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:26px 24px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+  .popup .check{width:52px;height:52px;border-radius:50%;background:var(--greenbg);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;margin:0 auto 12px}
+  .popup h2{margin:0 0 6px;text-align:center;font-size:22px;color:var(--navy)}
+  .popup .sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 18px}
+  .kv{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px}
+  .kv .rowline{display:flex;justify-content:space-between;gap:10px;padding:11px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+  .kv .rowline:last-child{border-bottom:none}
+  .kv .k{color:var(--muted);flex:none}
+  .kv .v{font-weight:600;text-align:right;word-break:break-all}
+  .kv .v.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+  .certbox{border:1px solid #bbf0ea;background:#f0fdfb;border-radius:12px;padding:12px 14px;margin-bottom:14px}
+  .certbox .lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teal2);text-transform:uppercase;margin-bottom:6px}
+  .certbox a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-all;color:var(--navy2)}
+  .certbox .ok{font-size:13px;color:var(--green);font-weight:600;margin-top:8px}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap}
+  .btnrow button{flex:1;padding:11px 10px;font-size:14px;font-weight:600;border-radius:10px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--navy)}
+  .btnrow button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .btnrow button:hover{opacity:.92}
+  .popup .note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+  @media (max-width:520px){ .row{grid-template-columns:1fr} .hero h1{font-size:21px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="brand">
+      <img src="drift-logo.png" alt="Drift Network">
+      <div class="name">Drift Network</div>
+      <div class="tag">Medicare &bull; ACA &bull; Final Expense</div>
+    </div>
+    <div class="hero">
+      <h1>Medicare Plan Information Request</h1>
+      <p>Request information about Medicare Advantage, Medicare Supplement and Medicare Part D plans available in your area. A licensed insurance agent may contact you with plan options.</p>
+      <div class="rule"></div>
+    </div>
+
+    <form id="medicare-form" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="first_name">First name <span class="req">*</span></label>
+          <input type="text" id="first_name" name="first_name" autocomplete="given-name" placeholder="First name" required>
+          <div class="err" id="err-first_name">Please enter your first name.</div>
+        </div>
+        <div class="field">
+          <label for="last_name">Last name <span class="req">*</span></label>
+          <input type="text" id="last_name" name="last_name" autocomplete="family-name" placeholder="Last name" required>
+          <div class="err" id="err-last_name">Please enter your last name.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="Phone number" required>
+        <div class="err" id="err-phone">Please enter a valid 10-digit phone number.</div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="Email address (optional)">
+        <div class="err" id="err-email">Please enter a valid email address.</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="dob">Date of birth <span class="req">*</span></label>
+          <input type="date" id="dob" name="dob" required>
+          <div class="err" id="err-dob">Please enter a valid date of birth.</div>
+        </div>
+        <div class="field">
+          <label for="zip">ZIP code <span class="req">*</span></label>
+          <input type="text" id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" placeholder="ZIP code" required>
+          <div class="err" id="err-zip">Please enter a valid 5-digit ZIP code.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="state">State <span class="req">*</span></label>
+        <select id="state" name="state" required>
+          <option value="">Select your state</option>
+          <option value="AL">Alabama</option><option value="AK">Alaska</option>
+          <option value="AZ">Arizona</option><option value="AR">Arkansas</option>
+          <option value="CA">California</option><option value="CO">Colorado</option>
+          <option value="CT">Connecticut</option><option value="DE">Delaware</option>
+          <option value="DC">District of Columbia</option><option value="FL">Florida</option>
+          <option value="GA">Georgia</option><option value="HI">Hawaii</option>
+          <option value="ID">Idaho</option><option value="IL">Illinois</option>
+          <option value="IN">Indiana</option><option value="IA">Iowa</option>
+          <option value="KS">Kansas</option><option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option><option value="ME">Maine</option>
+          <option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+          <option value="MI">Michigan</option><option value="MN">Minnesota</option>
+          <option value="MS">Mississippi</option><option value="MO">Missouri</option>
+          <option value="MT">Montana</option><option value="NE">Nebraska</option>
+          <option value="NV">Nevada</option><option value="NH">New Hampshire</option>
+          <option value="NJ">New Jersey</option><option value="NM">New Mexico</option>
+          <option value="NY">New York</option><option value="NC">North Carolina</option>
+          <option value="ND">North Dakota</option><option value="OH">Ohio</option>
+          <option value="OK">Oklahoma</option><option value="OR">Oregon</option>
+          <option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option>
+          <option value="SC">South Carolina</option><option value="SD">South Dakota</option>
+          <option value="TN">Tennessee</option><option value="TX">Texas</option>
+          <option value="UT">Utah</option><option value="VT">Vermont</option>
+          <option value="VA">Virginia</option><option value="WA">Washington</option>
+          <option value="WV">West Virginia</option><option value="WI">Wisconsin</option>
+          <option value="WY">Wyoming</option>
+        </select>
+        <div class="err" id="err-state">Please select your state.</div>
+      </div>
+
+      <div class="field">
+        <label for="parts_ab">Do you currently have Medicare Part A and Part B? <span class="req">*</span></label>
+        <select id="parts_ab" name="parts_ab" required>
+          <option value="">Select an answer</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+          <option value="Not sure">Not sure</option>
+        </select>
+        <div class="err" id="err-parts_ab">Please select an answer.</div>
+      </div>
+
+      <div class="field">
+        <label for="best_time">Best time to contact you</label>
+        <select id="best_time" name="best_time">
+          <option value="">Any time</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+        </select>
+      </div>
+
+      <input type="hidden" id="xxTrustedFormCertUrl" name="xxTrustedFormCertUrl">
+      <input type="hidden" id="xxTrustedFormPingUrl" name="xxTrustedFormPingUrl">
+      <input type="hidden" id="xxTrustedFormCertToken" name="trusted_form_cert_token">
+
+      <div class="consent" id="consent-box">
+        <label for="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>By checking this box and submitting my information, I agree that Drift Network may contact me by telephone, text message and email at the number and address I provided regarding Medicare Advantage, Medicare Supplement and Medicare Part D plans, including through automated telephone dialing systems and prerecorded or artificial voice messages. I understand this consent is not a condition of purchase and that I may be contacted even if my number appears on a Do Not Call registry. This is a solicitation for insurance. Drift Network is an independent third-party marketing organization and is not affiliated with, endorsed by, or connected to the U.S. government, the Medicare program, CMS, or any state or federal health insurance marketplace.</span>
+        </label>
+        <div class="err" id="err-consent">Please check the consent box to continue.</div>
+      </div>
+
+      <div class="cert-status" id="cert-status"><span class="dot"></span><span id="cert-text">Securing your consent certificate&hellip; this takes a moment.</span></div>
+
+      <button type="submit" class="submit" id="submit-btn" disabled>Request Information</button>
+      <div class="secure">Your information is sent securely and used only to arrange contact about Medicare plan options.</div>
+    </form>
+
+    <div class="disclaimers">
+      <p>We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options.</p>
+      <p>Drift Network is not affiliated with, endorsed by, or connected to the U.S. government, the Medicare program, or CMS. This is a solicitation for insurance. A licensed insurance agent may contact you as described in the consent above.</p>
+    </div>
+    <div class="foot">
+      Drift Network &bull; <a href="https://driftnetwork.dpdns.org">driftnetwork.dpdns.org</a> &bull; <a href="mailto:info@driftnetwork.dpdns.org">info@driftnetwork.dpdns.org</a>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation popup -->
+<div class="overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <div class="popup">
+    <div class="check">&#10003;</div>
+    <h2 id="popup-title">Request Received</h2>
+    <p class="sub">Thank you. Your information has been recorded. A licensed agent may reach out at the number you provided.</p>
+    <div class="kv">
+      <div class="rowline"><span class="k">Lead ID</span><span class="v mono" id="pop-lead-id">&mdash;</span></div>
+      <div class="rowline"><span class="k">Name</span><span class="v" id="pop-name">&mdash;</span></div>
+      <div class="rowline"><span class="k">Submitted</span><span class="v" id="pop-time">&mdash;</span></div>
+    </div>
+    <div class="certbox">
+      <div class="lbl">TrustedForm Consent Certificate</div>
+      <a id="pop-cert-link" href="#" target="_blank" rel="noopener noreferrer">&mdash;</a>
+      <div class="ok">Consent certificate: Recorded &#10003;</div>
+    </div>
+    <div class="btnrow">
+      <button type="button" id="btn-copy-id">Copy Lead ID</button>
+      <button type="button" id="btn-copy-cert">Copy Certificate Link</button>
+      <button type="button" class="primary" id="btn-close-popup">Done</button>
+    </div>
+    <p class="note">Keep your Lead ID for reference. <a href="#" id="link-another">Submit another request</a></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var FIELD = "xxTrustedFormCertUrl";
+  var PING = "xxTrustedFormPingUrl";
+  var form = document.getElementById("medicare-form");
+  var submitBtn = document.getElementById("submit-btn");
+  var statusBox = document.getElementById("cert-status");
+  var statusText = document.getElementById("cert-text");
+  var pollTimer = null, stopTimer = null, certReady = false;
+
+  function certUrl(){
+    var inp = document.querySelector('input[name="' + FIELD + '"]');
+    var el = document.getElementById(FIELD) || document.getElementById(FIELD + "_0");
+    return ((window.TrustedForm && window.TrustedForm.certificate_url) || (inp && inp.value) || (el && el.value) || "");
+  }
+  function pingUrl(){
+    var inp = document.querySelector('input[name="' + PING + '"]');
+    var el = document.getElementById(PING) || document.getElementById(PING + "_0");
+    return ((window.TrustedForm && window.TrustedForm.ping_url) || (inp && inp.value) || (el && el.value) || "");
+  }
+  function stopPolling(){
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    if (stopTimer) { clearTimeout(stopTimer); stopTimer = null; }
+  }
+  function markReady(){
+    certReady = true;
+    stopPolling();
+    statusBox.className = "cert-status ready";
+    statusText.textContent = "Certificate ready \u2713";
+    submitBtn.disabled = false;
+  }
+  function checkCert(){
+    if (certUrl()) { markReady(); return true; }
+    return false;
+  }
+  function loadTrustedForm(){
+    stopPolling();
+    certReady = false;
+    submitBtn.disabled = true;
+    statusBox.className = "cert-status";
+    statusText.textContent = "Securing your consent certificate\u2026 this takes a moment.";
+    document.querySelectorAll("script[data-trustedform]").forEach(function(s){ s.remove(); });
+    var onReady = function(){ checkCert(); };
+    document.addEventListener("trustedform:ready", onReady);
+    var sc = document.createElement("script");
+    sc.type = "text/javascript";
+    sc.async = true;
+    sc.setAttribute("data-trustedform", "1");
+    sc.src = "https://api.trustedform.com/trustedform.js?field=" + FIELD + "&ping_field=" + PING + "&l=" + Date.now();
+    sc.onload = function(){
+      statusText.textContent = "Script loaded, generating certificate\u2026";
+      if (!checkCert()) {
+        pollTimer = setInterval(checkCert, 300);
+        stopTimer = setTimeout(function(){
+          stopPolling();
+          if (!certUrl()) {
+            statusBox.className = "cert-status failed";
+            statusText.innerHTML = "Certificate could not be generated. An ad blocker or browser tracking protection may be blocking it. Please disable it for this page and ";
+            var retry = document.createElement("button");
+            retry.type = "button";
+            retry.textContent = "retry";
+            retry.onclick = loadTrustedForm;
+            statusText.appendChild(retry);
+            statusText.appendChild(document.createTextNode("."));
+          }
+        }, 60000);
+      }
+    };
+    sc.onerror = function(){
+      statusBox.className = "cert-status failed";
+      statusText.textContent = "The consent certificate script was blocked by your browser. Please disable any ad blocker for this page and reload.";
+    };
+    document.body.appendChild(sc);
+  }
+
+  function setErr(id, on){
+    var e = document.getElementById("err-" + id);
+    var f = document.getElementById(id);
+    if (e) e.style.display = on ? "block" : "none";
+    if (f) f.classList.toggle("invalid", !!on);
+  }
+  function validate(){
+    var ok = true;
+    var first = document.getElementById("first_name").value.trim();
+    var last = document.getElementById("last_name").value.trim();
+    var phoneDigits = document.getElementById("phone").value.replace(/\D/g, "");
+    if (phoneDigits.length === 11 && phoneDigits.charAt(0) === "1") phoneDigits = phoneDigits.slice(1);
+    var email = document.getElementById("email").value.trim();
+    var dob = document.getElementById("dob").value;
+    var zip = document.getElementById("zip").value.trim();
+    var state = document.getElementById("state").value;
+    var parts = document.getElementById("parts_ab").value;
+    var consent = document.getElementById("consent").checked;
+
+    setErr("first_name", !first); if (!first) ok = false;
+    setErr("last_name", !last); if (!last) ok = false;
+    var phoneOk = phoneDigits.length === 10;
+    setErr("phone", !phoneOk); if (!phoneOk) ok = false;
+    var emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setErr("email", !emailOk); if (!emailOk) ok = false;
+    var dobOk = !!dob && !isNaN(Date.parse(dob)) && new Date(dob) < new Date();
+    setErr("dob", !dobOk); if (!dobOk) ok = false;
+    var zipOk = /^\d{5}$/.test(zip);
+    setErr("zip", !zipOk); if (!zipOk) ok = false;
+    setErr("state", !state); if (!state) ok = false;
+    setErr("parts_ab", !parts); if (!parts) ok = false;
+    var consentBox = document.getElementById("consent-box");
+    consentBox.classList.toggle("invalid", !consent);
+    document.getElementById("err-consent").style.display = consent ? "none" : "block";
+    if (!consent) ok = false;
+    return ok;
+  }
+
+  function generateLeadId(){
+    return "DN-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+
+  function copyText(text, btn, doneLabel){
+    var done = function(){
+      var old = btn.textContent;
+      btn.textContent = doneLabel;
+      setTimeout(function(){ btn.textContent = old; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  }
+
+  var lastLeadId = "", lastCert = "";
+  function openPopup(leadId, cert, name, when){
+    lastLeadId = leadId; lastCert = cert;
+    document.getElementById("pop-lead-id").textContent = leadId;
+    document.getElementById("pop-name").textContent = name;
+    document.getElementById("pop-time").textContent = when;
+    var link = document.getElementById("pop-cert-link");
+    link.textContent = cert;
+    link.href = cert;
+    document.getElementById("popup-overlay").classList.add("open");
+    document.getElementById("btn-close-popup").focus();
+  }
+  function closePopup(){
+    document.getElementById("popup-overlay").classList.remove("open");
+  }
+  document.getElementById("btn-close-popup").addEventListener("click", closePopup);
+  document.getElementById("popup-overlay").addEventListener("click", function(e){
+    if (e.target === this) closePopup();
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") closePopup();
+  });
+  document.getElementById("btn-copy-id").addEventListener("click", function(){
+    copyText(lastLeadId, this, "Copied \u2713");
+  });
+  document.getElementById("btn-copy-cert").addEventListener("click", function(){
+    copyText(lastCert, this, "Copied \u2713");
+  });
+  document.getElementById("link-another").addEventListener("click", function(e){
+    e.preventDefault();
+    closePopup();
+    form.reset();
+    loadTrustedForm();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!validate()) return;
+    var cert = certUrl();
+    if (!cert) {
+      statusBox.className = "cert-status failed";
+      statusText.textContent = "The consent certificate is not ready yet. Please wait a moment and try again.";
+      loadTrustedForm();
+      return;
+    }
+    var leadId = generateLeadId();
+    var now = new Date();
+    var whenStr = now.toLocaleString("en-US", { timeZone: "America/New_York", year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) + " ET";
+    var data = {
+      "Lead ID": leadId,
+      "First name": document.getElementById("first_name").value.trim(),
+      "Last name": document.getElementById("last_name").value.trim(),
+      "Phone": document.getElementById("phone").value.trim(),
+      "Email": document.getElementById("email").value.trim(),
+      "Date of birth": document.getElementById("dob").value,
+      "ZIP code": document.getElementById("zip").value.trim(),
+      "State": document.getElementById("state").value,
+      "Medicare Part A and Part B": document.getElementById("parts_ab").value,
+      "Best time to contact": document.getElementById("best_time").value || "Any time",
+      "TCPA consent": "Yes — consent box checked",
+      "TrustedForm certificate URL": cert,
+      "TrustedForm ping URL": pingUrl(),
+      "TrustedForm cert token": (document.getElementById("xxTrustedFormCertToken") || {}).value || "",
+      "Page URL": window.location.href,
+      "Submitted": now.toISOString(),
+      "_subject": "New Medicare lead " + leadId + " — Drift Network",
+      "_template": "table",
+      "_captcha": "false"
+    };
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending\u2026";
+    var done = function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request Information";
+      openPopup(leadId, cert, data["First name"] + " " + data["Last name"], whenStr);
+    };
+    var controller = null, timedOut = false;
+    try { controller = new AbortController(); } catch (err) { controller = null; }
+    var timer = null;
+    if (controller) {
+      timer = setTimeout(function(){ timedOut = true; try { controller.abort(); } catch (err) {} }, 8000);
+    }
+    fetch("https://formsubmit.co/ajax/babar@inventumcommunications.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data),
+      signal: controller ? controller.signal : undefined
+    }).then(function(){ if (timer) clearTimeout(timer); done(); })
+    .catch(function(){ if (timer) clearTimeout(timer); done(); });
+  });
+
+  loadTrustedForm();
+})();
+</script>
+</body>
+</html>

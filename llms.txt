@@ -1,0 +1,43 @@
+# Drift Network
+
+> Drift Network delivers consent-based, live-agent qualified Medicare, ACA and Final Expense live transfers and inbound calls to insurance buyers across all 50 US states. Based in Los Angeles, California, USA. Insurance publishers can apply through the website to send traffic; buyers can request a test batch.
+
+## About
+
+- Drift Network is a health insurance call network for Medicare, ACA and Final Expense.
+- Every consumer is qualified by a live agent before transfer. No cold data, no recycled leads.
+- Consent is recorded before every transfer, with TrustedForm consent certificates on every web-generated call.
+- Traffic is TCPA-conscious, with clear consent language and no DNC violations.
+- Calls are routed in real time to the buyer's team or call center.
+- Capacity: 30+ trained agents, 500-1,000 calls per day, all 50 US states.
+- Drift Network is not a government agency and is not affiliated with Medicare, the Health Insurance Marketplace, or any state or federal program.
+
+## Services
+
+- [Medicare Advantage live transfers](https://driftnetwork.dpdns.org/#verticals): Live transfers of Medicare-eligible consumers exploring their Advantage and supplement options, with consent recorded before every transfer.
+- [ACA health insurance calls](https://driftnetwork.dpdns.org/#verticals): Inbound and live-transfer ACA calls from consumers actively shopping for marketplace coverage, qualified on intent and eligibility.
+- [Final Expense live transfers](https://driftnetwork.dpdns.org/#verticals): Compassionate, agent-qualified Final Expense conversations with consumers aged 45-85 planning ahead for their families. Final Expense is ping-first: a ping goes before the call connects.
+
+## For insurance buyers
+
+- Buyers share their criteria — states, hours, volume, qualification rules — and Drift Network routes matching live calls to their floor.
+- Buyers can start with a small test batch and scale what converts.
+- Call data is transparent: duration, source and qualification notes.
+
+## For insurance publishers
+
+- [Apply as a Publisher](https://driftnetwork.dpdns.org/#publishers): publishers apply with their traffic details, consent method, sample call recording links and redacted data sample links.
+- Payouts are competitive, on NET 15 terms, paid after buyer payment. Rates are confirmed during review, based on vertical, quality and volume.
+- A [quick fit check](https://driftnetwork.dpdns.org/#fit-check) on the website tells publishers whether to apply now or gather a sample first.
+
+## Contact
+
+- Website: https://driftnetwork.dpdns.org/
+- Email: info@driftnetwork.dpdns.org
+- Location: Los Angeles, California, USA
+- LinkedIn: https://www.linkedin.com/company/driftnetwork/
+- Instagram: https://www.instagram.com/driftnetworkofficial/
+
+## Optional
+
+- [Medicare plan information request form](https://driftnetwork.dpdns.org/medicare-quotes.html): consumer-facing Medicare information request form with TrustedForm consent certificate generation.
